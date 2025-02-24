@@ -3,11 +3,13 @@ import './todolist.css'
 import { MdDeleteOutline } from "react-icons/md";
 import { HiPencilAlt } from "react-icons/hi";
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 const TodoList = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [list, setList] = useState([]);
+    const navigate = useNavigate();
 
     const token = JSON.parse(localStorage.getItem("authToken"))
     const headers = {Authorization: `Bearer ${token}`}
@@ -19,6 +21,9 @@ const TodoList = () => {
         try {
             const res = await axios.post(url, { title, description }, { headers });
             console.log(res);
+            if(res.status === 201){
+              alert("Todo successfully created")
+            }
     
             setList([...list, res.data]);
             setTitle("");
@@ -26,6 +31,8 @@ const TodoList = () => {
             
         } catch (error) {
             console.log(error);
+            alert(error?.response?.data?.error)
+            navigate("/login")
         }
     }
     
@@ -85,32 +92,34 @@ try{
     
       return (
         <>
-          <div className='header'>
-            <h1>TODO LIST</h1>
-          </div>
-          <div className='user'>
-            <input type="text"
-            onChange={(e) => setTitle(e.target.value)}
-            value={title}
-            placeholder='Title...' />
+        <div className='body'>
+            <div className='header'>
+              <h1>TODO LIST</h1>
+            </div>
+            <div className='user'>
+              <input type="text"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              placeholder='Title...' />
 
-            <input type="text"
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-            placeholder='add description...' />
-            <button onClick={createTodo}>ADD</button>
-          </div>
-    
-          <div className='output'>
-            {list.map((props, id) => (
-              <div className='result' key={id} style={{textDecoration: props?.isTrash === true ? "line-through" : "",
-                color: props?.isTrash === true ? "gray" : ""
-              }}>
-                <p style={{width: "20%", height: "100%", padding: "5px", textAlign: "center", display: "flex", alignItems: "center"}}>{props.title}</p>
-                <p style={{width: "50%", height: "100%", padding: "5px", textAlign: "center", display: "flex", alignItems: "center"}}>{props.description}</p>
-                <MdDeleteOutline onClick={() => deleteTodo(props._id)} style={{fontSize: "30px", color: "red", cursor: "pointer"}}/> 
-                <HiPencilAlt onClick={() => trashTodo(props. _id)}style={{fontSize: "30px", color: "green", cursor: "pointer"}}/></div>
-            ))}
+              <input type="text"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+              placeholder='add description...' />
+              <button onClick={createTodo}>ADD</button>
+            </div>
+      
+            <div className='output'>
+              {list.map((props, id) => (
+                <div className='result' key={id} style={{textDecoration: props?.isTrash === true ? "line-through" : "",
+                  color: props?.isTrash === true ? "gray" : ""
+                }}>
+                  <p style={{width: "20%", height: "100%", padding: "5px", textAlign: "center", display: "flex", alignItems: "center"}}>{props.title}</p>
+                  <p style={{width: "50%", height: "100%", padding: "5px", textAlign: "center", display: "flex", alignItems: "center"}}>{props.description}</p>
+                  <MdDeleteOutline onClick={() => deleteTodo(props._id)} style={{fontSize: "30px", color: "red", cursor: "pointer"}}/> 
+                  <HiPencilAlt onClick={() => trashTodo(props. _id)}style={{fontSize: "30px", color: "green", cursor: "pointer"}}/></div>
+              ))}
+            </div>
           </div>
         </>
       )

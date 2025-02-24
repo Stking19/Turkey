@@ -58,6 +58,7 @@ const Login = () => {
                 </div>
                 <button type="submit" onClick={handleLogin}>Login</button>
                 </div>
+                <p style={{marginTop: "10px"}}>Don't have an account? <span style={{color: "orangered", textDecoration: "underline", cursor: "pointer"}} onClick={() => navigate("/signup")}>sign up here</span></p>
             </form>
         </div>
         </div>
