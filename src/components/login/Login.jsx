@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './login.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -18,19 +19,20 @@ const Login = () => {
             console.log(response);
             localStorage.setItem("authToken", JSON.stringify(response.data.token))
             if(response.status === 200){
-                alert("Login succesfull")
+                alert('login successfull')
             }
             navigate("/")
 
         }catch(err){
             console.log(err)
-            alert(err?.response?.data?.error)
+            toast.error(err?.response?.data?.error)
 
         }
     }
     return (
         <>
         <div className='mainSection'>
+            <ToastContainer />
                 <div className='leftBod'>
             
                 </div>

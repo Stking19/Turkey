@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './signup.css'
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [email, setEmail] = useState('');
@@ -16,11 +17,11 @@ const Signup = () => {
         try{
             const response = await axios.post(url, {email, password, baseUrl})
             console.log(response);
-            alert(response.data.message)
+            toast.success(response.data.message)
 
         }catch(err){
             console.log(err)
-            alert(err.response.data.error)
+            toast.error(err.response.data.error)
 
         }
     }

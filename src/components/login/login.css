@@ -61,6 +61,12 @@ button{
     font-size: 16px;
 }
 
+button:hover{
+    background-color: white;
+    color: orangered;
+    border: 1px solid orangered;
+}
+
 button:active{
     background-color: white;
     color: orangered;

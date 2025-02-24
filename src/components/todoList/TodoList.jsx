@@ -4,6 +4,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { HiPencilAlt } from "react-icons/hi";
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { toast, ToastContainer } from 'react-toastify';
 
 const TodoList = () => {
     const [title, setTitle] = useState("");
@@ -21,17 +22,16 @@ const TodoList = () => {
         try {
             const res = await axios.post(url, { title, description }, { headers });
             console.log(res);
-            if(res.status === 201){
-              alert("Todo successfully created")
-            }
-    
             setList([...list, res.data]);
             setTitle("");
             setDescription("");
+            if(res.status === 201){
+              toast.success("Todo successfully created")
+            }
             
         } catch (error) {
             console.log(error);
-            alert(error?.response?.data?.error)
+            toast.error(error?.response?.data?.error)
             navigate("/login")
         }
     }
@@ -63,12 +63,12 @@ const url3 = `https://free-todo-api.vercel.app/delete-todo/${todoId}`
     try{
         const res = await axios.delete(url3);
         console.log(res)
-        alert(res?.data?.message);
+        toast.success(res?.data?.message);
         setList(list.filter((todo) => todo._id !== todoId));
 
     }catch(err){
         console.log(err)
-        alert("Error deleting to-do");
+        toast.error("Error deleting to-do");
     }
 }
 
@@ -89,10 +89,10 @@ try{
 }
 }
 
-    
       return (
         <>
         <div className='body'>
+          <ToastContainer />
             <div className='header'>
               <h1>TODO LIST</h1>
             </div>
